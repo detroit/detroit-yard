@@ -25,7 +25,7 @@ module Detroit
 
     # Locations to check for existance in deciding where to store
     # yard documentation.
-    DEFAULT_OUTPUT_MATCH = "{site/,website/,doc/,}{yard,doc}"
+    DEFAULT_OUTPUT_MATCH = "{site/,website/,doc/}yard"
 
     # Default main file.
     DEFAULT_README = "README"
@@ -42,19 +42,8 @@ module Detroit
     #
     #DEFAULT_TOPFILES = '[A-Z]*'
 
-    #
-    def initialize_defaults
-      @title    = metadata.title
-      @files    = metadata.loadpath + ['bin'] # DEFAULT_FILES
-      @topfiles = ['[A-Z]*']
 
-      @output   = Dir[DEFAULT_OUTPUT_MATCH].first || DEFAULT_OUTPUT
-      @readme   = DEFAULT_README
-      @extra    = DEFAULT_EXTRA
-      @template = ENV['YARD_TEMPLATE'] || DEFAULT_TEMPLATE
-    end
-
-    public
+    #  A T T R I B U T E S
 
     # If set to true, use `.yardopts` file and ignore other settings.
     attr_accessor :yardopts
@@ -62,7 +51,7 @@ module Detroit
     # Title of documents. Defaults to general metadata title field.
     attr_accessor :title
 
-    # Where to save yard files (doc/yard).
+    # Directory in which to save yard files.
     attr_accessor :output
 
     # Template to use (defaults to ENV['YARD_TEMPLATE'] or 'default')
@@ -99,6 +88,31 @@ module Detroit
     attr_accessor :extra
 
 
+    #  A S S E M B L Y  S T A T I O N S
+
+    # Attach document method to assembly.
+    def station_document
+      document
+    end
+
+    # Attach reset method to assembly.
+    def station_reset
+      reset
+    end
+
+    # Attach clean method to assembly.
+    def station_clean
+      clean
+    end
+
+    # Attach purge method to assembly.
+    def station_purge
+      purge
+    end
+
+
+    #  M E T H O D S
+
     # Are YARD docs current and not in need of updating?
     # If yes, returns string message, otherwise `false`.
     def current?
@@ -109,7 +123,7 @@ module Detroit
       end
     end
 
-    # Generate Rdoc documentation. Settings are the
+    # Generate documentation. Settings are the
     # same as the yardoc command's option, with two
     # exceptions: +inline+ for +inline-source+ and
     # +output+ for +op+.
@@ -127,7 +141,9 @@ module Detroit
       if (msg = current?) && ! force?
         report msg
       else
-        status "Generating #{output}"
+        if !yardopts
+          status "Generating YARD documentation in #{output}."
+        end
 
         #target_main = Dir.glob(target['main'].to_s, File::FNM_CASEFOLD).first
         #target_main   = File.expand_path(target_main) if target_main
@@ -150,15 +166,13 @@ module Detroit
 
         yard_target(output, argv)
 
-        #insert_ads(output, adfile)
-
-        touch(output)
+        touch(output) if File.directory?(output) unless yardopts
       end
     end
 
     # Mark the output directory as out of date.
     def reset
-      if directory?(output)
+      if directory?(output) && !yardopts
         utime(0, 0, output)
         report "Reset #{output}" #unless trial?
       end
@@ -176,27 +190,19 @@ module Detroit
       end
     end
 
-    # Attach document method to assembly.
-    def assembly_document
-      document
-    end
+  private
 
-    # Attach reset method to assembly.
-    def assembly_reset
-      reset
-    end
+    #
+    def initialize_defaults
+      @title    = metadata.title
+      @files    = metadata.loadpath + ['bin'] # DEFAULT_FILES
+      @topfiles = ['[A-Z]*']
 
-    # Attach clean method to assembly.
-    def assembly_clean
-      clean
+      @output   = Dir[DEFAULT_OUTPUT_MATCH].first || DEFAULT_OUTPUT
+      @readme   = DEFAULT_README
+      @extra    = DEFAULT_EXTRA
+      @template = ENV['YARD_TEMPLATE'] || DEFAULT_TEMPLATE
     end
-
-    # Attach purge method to assembly.
-    def assembly_purge
-      purge
-    end
-
-    private
 
     #
     def resolved_files
@@ -246,7 +252,7 @@ module Detroit
       args = argv.join(' ')
       cmd  = "yardoc " + args
 
-      status cmd
+      trace(cmd)
 
       if trial?
       else
