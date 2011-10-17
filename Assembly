@@ -9,13 +9,6 @@ qedoc:
   output: QED.rdoc
 
 yard:
-  active   : true
-  readme   : [ "README.rdoc" ]
-  topfiles : [ "[A-Z][A-Z]*" ]
-  files    : [ lib ]
-  exclude  : [ lib/detroit.yml ]
-  output   : doc
-  extra    : ~
   priority : 1
 
 dnote:

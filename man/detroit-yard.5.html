@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ronn/v0.7.3 (http://github.com/rtomayko/ronn/tree/0.7.3)'>
+  <title>detroit-yard(5) - generate yard api documentation via detroit</title>
+  <style type='text/css' media='all'>
+  /* style: man */
+  body#manpage {margin:0}
+  .mp {max-width:100ex;padding:0 9ex 1ex 4ex}
+  .mp p,.mp pre,.mp ul,.mp ol,.mp dl {margin:0 0 20px 0}
+  .mp h2 {margin:10px 0 0 0}
+  .mp > p,.mp > pre,.mp > ul,.mp > ol,.mp > dl {margin-left:8ex}
+  .mp h3 {margin:0 0 0 4ex}
+  .mp dt {margin:0;clear:left}
+  .mp dt.flush {float:left;width:8ex}
+  .mp dd {margin:0 0 0 9ex}
+  .mp h1,.mp h2,.mp h3,.mp h4 {clear:left}
+  .mp pre {margin-bottom:20px}
+  .mp pre+h2,.mp pre+h3 {margin-top:22px}
+  .mp h2+pre,.mp h3+pre {margin-top:5px}
+  .mp img {display:block;margin:auto}
+  .mp h1.man-title {display:none}
+  .mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {font-family:monospace;font-size:14px;line-height:1.42857142857143}
+  .mp h2 {font-size:16px;line-height:1.25}
+  .mp h1 {font-size:20px;line-height:2}
+  .mp {text-align:justify;background:#fff}
+  .mp,.mp code,.mp pre,.mp pre code,.mp tt,.mp kbd,.mp samp {color:#131211}
+  .mp h1,.mp h2,.mp h3,.mp h4 {color:#030201}
+  .mp u {text-decoration:underline}
+  .mp code,.mp strong,.mp b {font-weight:bold;color:#131211}
+  .mp em,.mp var {font-style:italic;color:#232221;text-decoration:none}
+  .mp a,.mp a:link,.mp a:hover,.mp a code,.mp a pre,.mp a tt,.mp a kbd,.mp a samp {color:#0000ff}
+  .mp b.man-ref {font-weight:normal;color:#434241}
+  .mp pre {padding:0 4ex}
+  .mp pre code {font-weight:normal;color:#434241}
+  .mp h2+pre,h3+pre {padding-left:0}
+  ol.man-decor,ol.man-decor li {margin:3px 0 10px 0;padding:0;float:left;width:33%;list-style-type:none;text-transform:uppercase;color:#999;letter-spacing:1px}
+  ol.man-decor {width:100%}
+  ol.man-decor li.tl {text-align:left}
+  ol.man-decor li.tc {text-align:center;letter-spacing:4px}
+  ol.man-decor li.tr {text-align:right;float:right}
+  </style>
+</head>
+<!--
+  The following styles are deprecated and will be removed at some point:
+  div#man, div#man ol.man, div#man ol.head, div#man ol.man.
+
+  The .man-page, .man-decor, .man-head, .man-foot, .man-title, and
+  .man-navigation should be used instead.
+-->
+<body id='manpage'>
+  <div class='mp' id='man'>
+
+  <div class='man-navigation' style='display:none'>
+    <a href="#NAME">NAME</a>
+    <a href="#DESCRIPTION">DESCRIPTION</a>
+    <a href="#OPTIONS">OPTIONS</a>
+    <a href="#EXAMPLES">EXAMPLES</a>
+    <a href="#RESOURCES">RESOURCES</a>
+    <a href="#COPYRIGHT">COPYRIGHT</a>
+    <a href="#SEE-ALSO">SEE ALSO</a>
+    </div>
+
+  <ol class='man-decor man-head man head'>
+    <li class='tl'>detroit-yard(5)</li>
+    <li class='tc'></li>
+    <li class='tr'>detroit-yard(5)</li>
+  </ol>
+
+  <h2 id="NAME">NAME</h2>
+<p class="man-name">
+  <code>detroit-yard</code> - <span class="man-whatis">generate yard api documentation via detroit</span>
+</p>
+
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+
+<p>The YARD plug-in for Detroit utilizes the <code>yard</code> documentation
+tool to generate API documentation for a project. It will also
+generate yri documentation files.</p>
+
+<h2 id="OPTIONS">OPTIONS</h2>
+
+<p>The following options can be used in the Detroit assembly file
+to define a YARD service.</p>
+
+<ul>
+<li><p><code>yardopts</code> - If set to true, use <code>.yardopts</code> file and ignore other settings.
+ This defaults to <code>true</code> if no other settings are given and a <code>.yardopts</code>
+ file exists.</p></li>
+<li><p><code>title</code> - Title of documents. Defaults to general metadata title field.</p></li>
+<li><p><code>output</code> - Where to save generated documentation. The default is <code>doc/</code>.</p></li>
+<li><p><code>template</code> - Template to use. This defaults to <code>ENV['YARD_TEMPLATE']</code>.</p></li>
+<li><p><code>files</code>/<code>include</code> - Which files to document. The default is <code>lib/</code>.</p></li>
+<li><p><code>exclude</code> - Paths to specifically exclude.</p></li>
+<li><p><code>ignore</code> - File patterns to ignore.</p></li>
+<li><p><code>docs</code> - Which project document files to include, e.g. <code>COPYING</code>.</p></li>
+<li><p><code>readme</code> - Main file. This can be a file pattern. This default is matched
+ to <code>README{,.*}</code>.</p></li>
+<li><p><code>extra</code> - Additional options passed to the <code>rdoc</code> command.</p></li>
+</ul>
+
+
+<h2 id="EXAMPLES">EXAMPLES</h2>
+
+<p>Usually <code>.yardopts</code> is used, in which case the simplest entry would be:</p>
+
+<pre><code>yard:
+  priority: 1
+</code></pre>
+
+<p>We set the priority lower than the default (highest is <code>0</code>) in case some other
+documentation tool generates files that should be included in the YARD docs.</p>
+
+<p>A more complex example might look like:</p>
+
+<pre><code>yard:
+  title: MyApp API
+  readme: INTRO.rdoc
+  include:
+     - lib
+  docs:
+     - [A-Z]*.*
+  ignore: 
+    - '*.yml'
+  output: site/api
+  priority: 1
+</code></pre>
+
+<p>The above examples use the YAML-base assembly format. Assembly
+files can also be Ruby-based. See Detroit documentation for more
+details.</p>
+
+<h2 id="RESOURCES">RESOURCES</h2>
+
+<ul>
+<li><p><a href="http://rubydoc.info/gems/detroit-rdoc">API Documentation</a></p></li>
+<li><p><a href="http://github.com/detroit/detroit-rdoc">Development Site</a></p></li>
+</ul>
+
+
+<h2 id="COPYRIGHT">COPYRIGHT</h2>
+
+<p>Copyright (c) 2010 Thomas Sawyer, Rubyworks</p>
+
+<p>Detroit YARD is distributable in accordance with the GPL v.3 license.</p>
+
+<h2 id="SEE-ALSO">SEE ALSO</h2>
+
+<p><span class="man-ref">detroit<span class="s">(1)</span></span>, <span class="man-ref">yard<span class="s">(1)</span></span></p>
+
+
+  <ol class='man-decor man-foot man foot'>
+    <li class='tl'></li>
+    <li class='tc'>October 2011</li>
+    <li class='tr'>detroit-yard(5)</li>
+  </ol>
+
+  </div>
+</body>
+</html>

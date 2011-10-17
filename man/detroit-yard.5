@@ -1,0 +1,107 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "DETROIT\-YARD" "5" "October 2011" "" ""
+.
+.SH "NAME"
+\fBdetroit\-yard\fR \- generate yard api documentation via detroit
+.
+.SH "DESCRIPTION"
+The YARD plug\-in for Detroit utilizes the \fByard\fR documentation tool to generate API documentation for a project\. It will also generate yri documentation files\.
+.
+.SH "OPTIONS"
+The following options can be used in the Detroit assembly file to define a YARD service\.
+.
+.IP "\(bu" 4
+\fByardopts\fR \- If set to true, use \fB\.yardopts\fR file and ignore other settings\. This defaults to \fBtrue\fR if no other settings are given and a \fB\.yardopts\fR file exists\.
+.
+.IP "\(bu" 4
+\fBtitle\fR \- Title of documents\. Defaults to general metadata title field\.
+.
+.IP "\(bu" 4
+\fBoutput\fR \- Where to save generated documentation\. The default is \fBdoc/\fR\.
+.
+.IP "\(bu" 4
+\fBtemplate\fR \- Template to use\. This defaults to \fBENV[\'YARD_TEMPLATE\']\fR\.
+.
+.IP "\(bu" 4
+\fBfiles\fR/\fBinclude\fR \- Which files to document\. The default is \fBlib/\fR\.
+.
+.IP "\(bu" 4
+\fBexclude\fR \- Paths to specifically exclude\.
+.
+.IP "\(bu" 4
+\fBignore\fR \- File patterns to ignore\.
+.
+.IP "\(bu" 4
+\fBdocs\fR \- Which project document files to include, e\.g\. \fBCOPYING\fR\.
+.
+.IP "\(bu" 4
+\fBreadme\fR \- Main file\. This can be a file pattern\. This default is matched to \fBREADME{,\.*}\fR\.
+.
+.IP "\(bu" 4
+\fBextra\fR \- Additional options passed to the \fBrdoc\fR command\.
+.
+.IP "" 0
+.
+.SH "EXAMPLES"
+Usually \fB\.yardopts\fR is used, in which case the simplest entry would be:
+.
+.IP "" 4
+.
+.nf
+
+yard:
+  priority: 1
+.
+.fi
+.
+.IP "" 0
+.
+.P
+We set the priority lower than the default (highest is \fB0\fR) in case some other documentation tool generates files that should be included in the YARD docs\.
+.
+.P
+A more complex example might look like:
+.
+.IP "" 4
+.
+.nf
+
+yard:
+  title: MyApp API
+  readme: INTRO\.rdoc
+  include:
+     \- lib
+  docs:
+     \- [A\-Z]*\.*
+  ignore:
+    \- \'*\.yml\'
+  output: site/api
+  priority: 1
+.
+.fi
+.
+.IP "" 0
+.
+.P
+The above examples use the YAML\-base assembly format\. Assembly files can also be Ruby\-based\. See Detroit documentation for more details\.
+.
+.SH "RESOURCES"
+.
+.IP "\(bu" 4
+API Documentation \fIhttp://rubydoc\.info/gems/detroit\-rdoc\fR
+.
+.IP "\(bu" 4
+Development Site \fIhttp://github\.com/detroit/detroit\-rdoc\fR
+.
+.IP "" 0
+.
+.SH "COPYRIGHT"
+Copyright (c) 2010 Thomas Sawyer, Rubyworks
+.
+.P
+Detroit YARD is distributable in accordance with the GPL v\.3 license\.
+.
+.SH "SEE ALSO"
+detroit(1), yard(1)

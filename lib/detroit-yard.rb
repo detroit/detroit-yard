@@ -71,11 +71,11 @@ module Detroit
       @files = list.to_list
     end
 
+    # More generic alternative to +files+.
+    alias_accessor :include, :files
+
     # Which project top-files to document.
     attr_reader :topfiles
-
-    # Alias for +files+.
-    alias_accessor :include, :files
 
     # Set topfiles list.
     def topfiles=(list)
@@ -83,8 +83,14 @@ module Detroit
       @topfiles = list.to_list
     end
 
+    # Alias for +topfiles+.
+    alias_accessor :docs, :topfiles
+
     # Paths to specifically exclude.
     attr_accessor :exclude
+
+    # File patterns to ignore.
+    attr_accessor :ignore
 
     # Additional options passed to the yardoc command.
     attr_accessor :extra
@@ -207,39 +213,27 @@ module Detroit
     end
 
     #
+    LOCAL_SETTINGS = %w{files includes topfiles docs readme output template exclude ignore extra}
+
+    # If there are no options set than default to using the .yardopts file (if it exists).
+    def initialize_options(options)
+      if !options.keys.any?{ |k| LOCAL_SETTINGS.include?(k) }
+        @yardopts = true if (project.root + '.yardopts').exist?
+      end
+      super(options)
+    end
+
+    #
     def resolved_files
       @resolved_files ||= (
-        list = self.files
-        list = list.map{ |g| Dir.glob(g) }.flatten
-        list = list.map{ |f| File.directory?(f) ? File.join(f,'**','*') : f }
-        list = list.map{ |g| Dir.glob(g) }.flatten  # need this to remove unwanted toplevel files
-        list = list.reject{ |f| File.directory?(f) }
-
-        # TODO: Does YARD command have an exclude option, use it instead if so?
-        exclude = self.exclude.to_list
-        exclude = exclude.collect{ |g| Dir.glob(File.join(g, '**/*')) }.flatten
-
-        #mfile = project.manifest.file
-        #mfile = project.manifest.file.basename if mfile
-        #exclude = (exclude + [mfile].compact).uniq
-        #files = files - [mfile].compact
-
-        list = list - exclude
-
-        list.uniq
+        amass(files, exclude || [], ignore || []).uniq
       )
     end
 
     #
     def resolved_topfiles
       @resolved_topfiles ||= (
-        list = self.topfiles
-        list = list.map{ |g| Dir.glob(g) }.flatten
-        list = list.map{ |f| File.directory?(f) ? File.join(f,'**','*') : f }
-        list = list.map{ |g| Dir.glob(g) }.flatten  # need this to remove unwanted toplevel files
-        list = list.reject{ |f| File.directory?(f) }
-        list = list - Dir.glob('rakefile{,.rb}', File::FNM_CASEFOLD)
-        list
+        amass(topfiles, exclude || [], ignore || [])
       )
     end
 

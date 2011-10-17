@@ -1,0 +1,85 @@
+detroit-yard(5) - generate yard api documentation via detroit
+=============================================================
+
+## DESCRIPTION
+
+The YARD plug-in for Detroit utilizes the `yard` documentation
+tool to generate API documentation for a project. It will also
+generate yri documentation files.
+
+
+## OPTIONS
+
+The following options can be used in the Detroit assembly file
+to define a YARD service.
+
+  * `yardopts` - If set to true, use `.yardopts` file and ignore other settings.
+     This defaults to `true` if no other settings are given and a `.yardopts`
+     file exists.
+
+  * `title` - Title of documents. Defaults to general metadata title field.
+
+  * `output` - Where to save generated documentation. The default is `doc/`.
+
+  * `template` - Template to use. This defaults to `ENV['YARD_TEMPLATE']`.
+
+  * `files`/`include` - Which files to document. The default is `lib/`.
+
+  * `exclude` - Paths to specifically exclude.
+
+  * `ignore` - File patterns to ignore.
+
+  * `docs` - Which project document files to include, e.g. `COPYING`.
+
+  * `readme` - Main file. This can be a file pattern. This default is matched
+     to `README{,.*}`.
+
+  * `extra` - Additional options passed to the `rdoc` command.
+
+
+## EXAMPLES
+
+Usually `.yardopts` is used, in which case the simplest entry would be:
+
+    yard:
+      priority: 1
+
+We set the priority lower than the default (highest is `0`) in case some other
+documentation tool generates files that should be included in the YARD docs.
+
+A more complex example might look like:
+
+    yard:
+      title: MyApp API
+      readme: INTRO.rdoc
+      include:
+         - lib
+      docs:
+         - [A-Z]*.*
+      ignore: 
+        - '*.yml'
+      output: site/api
+      priority: 1
+
+The above examples use the YAML-base assembly format. Assembly
+files can also be Ruby-based. See Detroit documentation for more
+details.
+
+
+## RESOURCES
+
+  * [API Documentation](http://rubydoc.info/gems/detroit-rdoc)
+
+  * [Development Site](http://github.com/detroit/detroit-rdoc)
+
+
+## COPYRIGHT
+
+Copyright (c) 2010 Thomas Sawyer, Rubyworks
+
+Detroit YARD is distributable in accordance with the GPL v.3 license.
+
+
+## SEE ALSO
+
+detroit(1), yard(1)

@@ -1,0 +1,5 @@
+--readme README.rdoc
+--output-dir doc
+lib/*.rb
+-
+[A-Z]*.*
