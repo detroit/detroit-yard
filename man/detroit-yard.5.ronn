@@ -68,9 +68,9 @@ details.
 
 ## RESOURCES
 
-  * [API Documentation](http://rubydoc.info/gems/detroit-rdoc)
+  * [API Documentation](http://rubydoc.info/gems/detroit-yard)
 
-  * [Development Site](http://github.com/detroit/detroit-rdoc)
+  * [Development Site](http://github.com/detroit/detroit-yard)
 
 
 ## COPYRIGHT
