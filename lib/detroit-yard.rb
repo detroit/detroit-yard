@@ -261,6 +261,12 @@ module Detroit
       require 'yard'
     end
 
+  public
+
+    def self.man_page
+      File.dirname(__FILE__)+'/../man/detroit-yard.5'
+    end
+
   end
 
 end
