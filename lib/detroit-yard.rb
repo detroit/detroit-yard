@@ -96,26 +96,26 @@ module Detroit
     attr_accessor :extra
 
 
-    #  A S S E M B L Y  S T A T I O N S
+    #  A S S E M B L Y  M E T H O D S
 
-    # Attach document method to assembly.
-    def station_document
-      document
+    #
+    def assemble?(station, options={})
+      case station
+      when :document then true
+      when :reset    then true
+      when :clean    then true
+      when :purge    then true
+      end
     end
 
-    # Attach reset method to assembly.
-    def station_reset
-      reset
-    end
-
-    # Attach clean method to assembly.
-    def station_clean
-      clean
-    end
-
-    # Attach purge method to assembly.
-    def station_purge
-      purge
+    #
+    def assemble(station)
+      case station
+      when :document then document
+      when :reset    then reset
+      when :clean    then clean
+      when :purge    then purge
+      end
     end
 
 
