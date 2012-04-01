@@ -19,7 +19,7 @@ locat:
   active: false
 
 github:
-  active: true
+  folder: web
 
 announce:
   service: email
