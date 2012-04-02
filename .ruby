@@ -26,7 +26,7 @@ revision: 0
 created: '2011-10-16'
 summary: YARD plugin for Detroit
 title: Detroit YARD
-version: 0.1.0
+version: 0.2.0
 name: detroit-yard
 suite: detroit
 description: YARD plugin for Detroit build system. The plugin generates YARD documentation
