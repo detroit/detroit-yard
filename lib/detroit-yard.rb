@@ -109,7 +109,7 @@ module Detroit
     end
 
     #
-    def assemble(station)
+    def assemble(station, options={})
       case station
       when :document then document
       when :reset    then reset

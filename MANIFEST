@@ -1,9 +1,8 @@
-#!mast .ruby bin lib man qed test [A-Z]*.*
-.ruby
+#!mast .index bin demo lib man test spec *.md *.txt
 lib/detroit-yard.rb
 man/detroit-yard.5
 man/detroit-yard.5.html
 man/detroit-yard.5.ronn
 LICENSE.txt
-README.rdoc
-COPYING.rdoc
+README.md
+NOTICE.txt
