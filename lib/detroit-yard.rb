@@ -1,4 +1,4 @@
-require 'detroit/tool'
+require 'detroit-standard'
 
 module Detroit
 
@@ -21,6 +21,9 @@ module Detroit
   # false negatives.
   #++
   class Yard < Tool
+
+    # YARD tool utilizes the standard assembly.
+    system :standard
 
     # Default location to store yard documentation files.
     DEFAULT_OUTPUT = "doc"
